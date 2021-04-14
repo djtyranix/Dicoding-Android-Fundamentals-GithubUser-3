@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailUserActivity">
+    tools:context=".view.detailuser.DetailUserActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
@@ -14,7 +14,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/detail_user_fragment_container"
-            android:name="com.nixstudio.githubuser2.ui.detailuser.DetailUserFragment"
+            android:name="com.nixstudio.githubuser3.view.detailuser.DetailUserFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/tablayout_fragment_container"
-            android:name="com.nixstudio.githubuser2.ui.detailuser.TablayoutContainerFragment"
+            android:name="com.nixstudio.githubuser3.view.detailuser.TablayoutContainerFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

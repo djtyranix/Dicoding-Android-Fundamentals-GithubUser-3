@@ -11,13 +11,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GithubUser2">
+        android:theme="@style/Theme.GithubUser3">
         <activity
-            android:name="com.nixstudio.githubuser3.ui.settings.SettingsActivity"
+            android:name="com.nixstudio.githubuser3.view.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name="com.nixstudio.githubuser3.DetailUserActivity" />
-        <activity android:name="com.nixstudio.githubuser3.MainActivity" />
-        <activity android:name="com.nixstudio.githubuser3.ui.SplashScreenActivity" android:theme="@style/SplashScreen">
+        <activity android:name="com.nixstudio.githubuser3.view.detailuser.DetailUserActivity" />
+        <activity android:name="com.nixstudio.githubuser3.view.main.MainActivity" />
+        <activity android:name="com.nixstudio.githubuser3.view.splashscreen.SplashScreenActivity" android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +25,4 @@
             </intent-filter>
         </activity>
     </application>
-
-
-
 </manifest>
