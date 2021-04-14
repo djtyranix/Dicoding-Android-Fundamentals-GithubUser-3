@@ -2,22 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nixstudio.githubuser3">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:fullBackupContent="true"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUser3">
+
+        <receiver
+            android:name=".services.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
-            android:name="com.nixstudio.githubuser3.view.settings.SettingsActivity"
+            android:name=".view.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name="com.nixstudio.githubuser3.view.detailuser.DetailUserActivity" />
-        <activity android:name="com.nixstudio.githubuser3.view.main.MainActivity" />
-        <activity android:name="com.nixstudio.githubuser3.view.splashscreen.SplashScreenActivity" android:theme="@style/SplashScreen">
+        <activity android:name=".view.detailuser.DetailUserActivity" />
+        <activity android:name=".view.main.MainActivity" />
+        <activity
+            android:name=".view.splashscreen.SplashScreenActivity"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,4 +35,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
