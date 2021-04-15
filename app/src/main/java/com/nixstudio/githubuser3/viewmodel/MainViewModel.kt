@@ -31,9 +31,6 @@ class MainViewModel : ViewModel() {
                 responseBody: ByteArray
             ) {
                 try {
-                    Log.d("Login", login)
-                    Log.d("Auth Key", apiKey)
-                    Log.d("Url", url)
                     val result = String(responseBody)
                     val responseObject = JSONObject(result)
                     val items = responseObject.getJSONArray("items")

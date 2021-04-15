@@ -1,17 +1,23 @@
 package com.nixstudio.githubuser3.viewmodel
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.nixstudio.githubuser3.BuildConfig
+import com.nixstudio.githubuser3.db.AppDatabase
+import com.nixstudio.githubuser3.model.Favorite
 import com.nixstudio.githubuser3.model.UserDetail
 import com.nixstudio.githubuser3.model.UsersItem
 import cz.msebera.android.httpclient.Header
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.math.log
 
 class DetailUserViewModel : ViewModel() {
 
@@ -19,6 +25,15 @@ class DetailUserViewModel : ViewModel() {
     val listFollowers = MutableLiveData<ArrayList<UsersItem>>()
     val listFollowing = MutableLiveData<ArrayList<UsersItem>>()
     val apiKey = BuildConfig.API_KEY
+    var db: AppDatabase? = null
+    var isUserExist = MutableLiveData<Boolean>()
+    var isExistTemp: Boolean = false
+
+    fun createDatabase(context: Context) {
+        if (db == null) {
+            db = AppDatabase(context)
+        }
+    }
 
     fun setUserDetail(login: String) {
         val url = "https://api.github.com/users/${login}"
@@ -182,4 +197,75 @@ class DetailUserViewModel : ViewModel() {
     fun getFollowers(): LiveData<ArrayList<UsersItem>> = listFollowers
 
     fun getFollowing(): LiveData<ArrayList<UsersItem>> = listFollowing
+
+    fun insertFavorite(user: UsersItem) {
+        isExistTemp = true
+        viewModelScope.launch(Dispatchers.Main){
+            withContext(Dispatchers.Default) {
+                try {
+                    val newFavorite = Favorite(
+                        user.login,
+                        user.url,
+                        user.avatarUrl
+                    )
+
+                    db?.favoriteDao()?.insertAll(newFavorite)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    fun deleteFavorite(user: UsersItem) {
+        isExistTemp = false
+        viewModelScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.Default) {
+                try {
+                    val deletedFavorite = Favorite(
+                        user.login,
+                        user.url,
+                        user.avatarUrl
+                    )
+
+                    db?.favoriteDao()?.delete(deletedFavorite)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    fun checkIsFavoriteExist(login: String) {
+        isUserExist.postValue(false)
+
+        viewModelScope.launch(Dispatchers.Main) {
+            val isExist = withContext(Dispatchers.Default) {
+                try {
+                    val count = db?.favoriteDao()?.checkIfExist(login)
+
+                    Log.d("count", count.toString())
+
+                    if (count != null) {
+                        if (count > 0) {
+                            Log.d("return", true.toString())
+                            return@withContext(true)
+                        } else {
+                            Log.d("return", false.toString())
+                            return@withContext(false)
+                        }
+                    } else {
+                        Log.d("else", false.toString())
+                        return@withContext(false)
+                    }
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            } as Boolean
+
+            isUserExist.postValue(isExist)
+        }
+    }
+
+    fun checkFavorite(): LiveData<Boolean> = isUserExist
 }

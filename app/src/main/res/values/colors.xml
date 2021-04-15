@@ -15,4 +15,5 @@
     <color name="cyan_500">#FF2196F3</color>
     <color name="cyan_200">#FF6EC6FF</color>
     <color name="cyan_700">#FF0069C0</color>
+    <color name="red_fav">#FFFF313B</color>
 </resources>

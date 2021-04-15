@@ -14,7 +14,7 @@ import com.nixstudio.githubuser3.databinding.MainFragmentBinding
 import com.nixstudio.githubuser3.model.UsersItem
 import com.nixstudio.githubuser3.viewmodel.MainViewModel
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), View.OnClickListener {
 
     private var _binding: MainFragmentBinding? = null
     val binding get() = _binding!!
@@ -37,8 +37,16 @@ class MainFragment : Fragment() {
         }
 
         binding.noUser.text = resources.getString(R.string.welcome_message)
+        binding.btnFavorite.setOnClickListener(this)
 
         return binding.root
+    }
+
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.btn_favorite) {
+            val toFavoriteList = MainFragmentDirections.actionMainFragmentToFavoriteActivity()
+            view?.findNavController()?.navigate(toFavoriteList)
+        }
     }
 
     fun searchUser(userLogin: String?) {

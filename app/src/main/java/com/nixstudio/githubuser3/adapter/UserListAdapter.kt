@@ -39,7 +39,7 @@ class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
         viewType: Int
     ): ViewHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_layout_cardview, parent, false)
         return ViewHolder(view)
     }
 

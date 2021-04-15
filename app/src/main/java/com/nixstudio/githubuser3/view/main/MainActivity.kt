@@ -14,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.nixstudio.githubuser3.R
 
 class MainActivity : AppCompatActivity() {
 
     private var mMainFragment = MainFragment()
     var doubleBackToExitOnce: Boolean = false
+    private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +31,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getForegroundFragment(): Fragment? {
-        val navHostFragment = supportFragmentManager.findFragmentByTag("container_fragment")
+        navHostFragment = supportFragmentManager.findFragmentByTag("container_fragment") as NavHostFragment
         return when (navHostFragment) {
-            null -> null
             else -> navHostFragment.childFragmentManager.fragments.get(0)
         }
     }

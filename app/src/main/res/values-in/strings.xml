@@ -27,4 +27,8 @@
     <string name="notif_off_confirmation">Tekan lagi untuk mematikan pengingat.</string>
     <string name="exit_confirmation">Tekan lagi untuk keluar.</string>
     <string name="reminder_cancelled">Reminder successfully cancelled.</string>
+    <string name="favorite">Favorite</string>
+    <string name="share">Share</string>
+    <string name="fav_add_success">Pengguna berhasil ditambahkan ke favorit.</string>
+    <string name="fav_del_success">Pengguna berhasil dihapus dari favorit.</string>
 </resources>
