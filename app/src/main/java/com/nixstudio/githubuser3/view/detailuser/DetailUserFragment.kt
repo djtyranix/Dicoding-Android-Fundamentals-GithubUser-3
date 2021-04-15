@@ -1,0 +1,90 @@
+package com.nixstudio.githubuser3.view.detailuser
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.nixstudio.githubuser3.R
+import com.nixstudio.githubuser3.databinding.DetailUserFragmentBinding
+import com.nixstudio.githubuser3.model.UserDetail
+import com.nixstudio.githubuser3.viewmodel.DetailUserViewModel
+import de.hdodenhof.circleimageview.CircleImageView
+
+class DetailUserFragment : Fragment() {
+
+    private var _binding: DetailUserFragmentBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: DetailUserViewModel by activityViewModels()
+    lateinit var imgPhoto: CircleImageView
+    lateinit var tvUsername: TextView
+    lateinit var tvName: TextView
+    lateinit var tvFollowersFollowing: TextView
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DetailUserFragmentBinding.inflate(inflater, container, false)
+        val currentActivity = activity as DetailUserActivity
+
+        imgPhoto = binding.imgUserPhoto
+        tvUsername = binding.tvUserUsername
+        tvName = binding.tvName
+        tvFollowersFollowing = binding.tvFollowersFollowing
+
+        currentActivity.setActionBarTitle(resources.getString(R.string.loading))
+        setVisibility(false)
+        showLoading(true)
+
+        viewModel.getUserDetail().observe(viewLifecycleOwner, { user ->
+            if (user != null) {
+                setData(user)
+                currentActivity.setActionBarTitle(user.login)
+                showLoading(false)
+                setVisibility(true)
+            }
+        })
+
+        return binding.root
+    }
+
+    fun setData(data: UserDetail) {
+        Glide.with(this)
+            .load(data.avatarUrl)
+            .apply(RequestOptions().override(550, 550))
+            .into(imgPhoto)
+
+        tvUsername.text = data.login
+        tvName.text = data.name
+        tvFollowersFollowing.text =
+            getString(R.string.followers_following, data.followers, data.following)
+    }
+
+    fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    fun setVisibility(state: Boolean) {
+        if (state) {
+            imgPhoto.visibility = View.VISIBLE
+            tvUsername.visibility = View.VISIBLE
+            tvName.visibility = View.VISIBLE
+            tvFollowersFollowing.visibility = View.VISIBLE
+        } else {
+            imgPhoto.visibility = View.GONE
+            tvUsername.visibility = View.GONE
+            tvName.visibility = View.GONE
+            tvFollowersFollowing.visibility = View.GONE
+        }
+    }
+
+}
