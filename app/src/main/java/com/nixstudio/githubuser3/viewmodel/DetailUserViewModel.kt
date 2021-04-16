@@ -2,10 +2,13 @@ package com.nixstudio.githubuser3.viewmodel
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
+import com.hadilq.liveevent.LiveEvent
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.nixstudio.githubuser3.BuildConfig
+import com.nixstudio.githubuser3.R
 import com.nixstudio.githubuser3.db.AppDatabase
 import com.nixstudio.githubuser3.model.Favorite
 import com.nixstudio.githubuser3.model.UserDetail
@@ -26,8 +29,7 @@ class DetailUserViewModel : ViewModel() {
     val listFollowing = MutableLiveData<ArrayList<UsersItem>>()
     val apiKey = BuildConfig.API_KEY
     var db: AppDatabase? = null
-    var isUserExist = MutableLiveData<Boolean>()
-    var isExistTemp: Boolean = false
+    var isUserExist = LiveEvent<Boolean>()
 
     fun createDatabase(context: Context) {
         if (db == null) {
@@ -199,7 +201,6 @@ class DetailUserViewModel : ViewModel() {
     fun getFollowing(): LiveData<ArrayList<UsersItem>> = listFollowing
 
     fun insertFavorite(user: UsersItem) {
-        isExistTemp = true
         viewModelScope.launch(Dispatchers.Main){
             withContext(Dispatchers.Default) {
                 try {
@@ -218,7 +219,6 @@ class DetailUserViewModel : ViewModel() {
     }
 
     fun deleteFavorite(user: UsersItem) {
-        isExistTemp = false
         viewModelScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.Default) {
                 try {

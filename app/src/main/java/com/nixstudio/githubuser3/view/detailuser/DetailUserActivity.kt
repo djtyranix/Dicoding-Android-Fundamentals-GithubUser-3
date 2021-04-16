@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.navArgs
@@ -30,11 +31,13 @@ import kotlinx.coroutines.channels.Channel
 import java.lang.Exception
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
+import kotlin.properties.Delegates
 
 class DetailUserActivity : AppCompatActivity() {
 
     private val viewModel: DetailUserViewModel by viewModels()
     private lateinit var user: UsersItem
+    private var isFavorited = false
 
     companion object {
         const val EXTRA_USER = "extra_user"
@@ -77,11 +80,18 @@ class DetailUserActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.user_detail_menu, menu)
 
-        if (viewModel.isExistTemp) {
-            menu.findItem(R.id.favorite).setIcon(R.drawable.ic_baseline_favorite_24_red)
-        } else {
-            menu.findItem(R.id.favorite).setIcon(R.drawable.ic_baseline_favorite_24)
-        }
+        viewModel.checkIsFavoriteExist(user.login)
+
+        viewModel.checkFavorite().observe(this, { isExist ->
+                if (isExist) { //User already favorited
+                    menu.findItem(R.id.favorite).setIcon(R.drawable.ic_baseline_favorite_24_red)
+                    isFavorited = true
+                } else {
+                    menu.findItem(R.id.favorite).setIcon(R.drawable.ic_baseline_favorite_24)
+                    isFavorited = false
+                }
+            }
+        )
 
         return true
     }
@@ -89,20 +99,17 @@ class DetailUserActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorite -> {
-                viewModel.checkIsFavoriteExist(user.login)
+                isFavorited = !isFavorited
 
-                viewModel.checkFavorite().observe(this, { isExist ->
-                        if (isExist) { //User already exist, delete fav
-                            viewModel.deleteFavorite(user)
-                            item.setIcon(R.drawable.ic_baseline_favorite_24)
-                            Toast.makeText(this, resources.getString(R.string.fav_del_success), Toast.LENGTH_SHORT).show()
-                        } else {
-                            viewModel.insertFavorite(user)
-                            item.setIcon(R.drawable.ic_baseline_favorite_24_red)
-                            Toast.makeText(this, resources.getString(R.string.fav_add_success), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                )
+                if (isFavorited) { //Add user
+                    viewModel.insertFavorite(user)
+                    Toast.makeText(this, resources.getString(R.string.fav_add_success), Toast.LENGTH_SHORT).show()
+                    item.setIcon(R.drawable.ic_baseline_favorite_24_red)
+                } else {
+                    viewModel.deleteFavorite(user)
+                    Toast.makeText(this, resources.getString(R.string.fav_del_success), Toast.LENGTH_SHORT).show()
+                    item.setIcon(R.drawable.ic_baseline_favorite_24)
+                }
 
                 return true
             }

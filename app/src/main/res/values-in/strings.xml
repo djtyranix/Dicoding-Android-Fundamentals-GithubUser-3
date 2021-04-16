@@ -31,4 +31,5 @@
     <string name="share">Share</string>
     <string name="fav_add_success">Pengguna berhasil ditambahkan ke favorit.</string>
     <string name="fav_del_success">Pengguna berhasil dihapus dari favorit.</string>
+    <string name="no_favorite">No favorited user found.</string>
 </resources>
