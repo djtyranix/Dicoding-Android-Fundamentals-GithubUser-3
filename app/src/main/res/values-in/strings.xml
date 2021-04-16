@@ -33,4 +33,7 @@
     <string name="fav_del_success">Pengguna berhasil dihapus dari favorit.</string>
     <string name="no_favorite">Pengguna favorit tidak ditemukan.</string>
     <string name="favorite_activity">Pengguna Favorit</string>
+    <string name="appwidget_text">PENGGUNA FAVORIT</string>
+    <string name="add_widget">Tambah widget</string>
+    <string name="empty_text">TIDAK ADA DATA</string>
 </resources>

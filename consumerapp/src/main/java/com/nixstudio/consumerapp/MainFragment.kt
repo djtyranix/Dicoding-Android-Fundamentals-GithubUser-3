@@ -1,39 +1,31 @@
-package com.nixstudio.githubuser3.view.favorite
+package com.nixstudio.consumerapp
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nixstudio.githubuser3.R
-import com.nixstudio.githubuser3.adapter.FavoriteListAdapter
-import com.nixstudio.githubuser3.databinding.FavoriteFragmentBinding
-import com.nixstudio.githubuser3.model.Favorite
-import com.nixstudio.githubuser3.model.UsersItem
-import com.nixstudio.githubuser3.view.detailuser.DetailUserActivity
-import com.nixstudio.githubuser3.viewmodel.FavoriteViewModel
+import com.nixstudio.consumerapp.databinding.FragmentMainBinding
 
-class FavoriteFragment : Fragment() {
-
+class MainFragment : Fragment() {
     val viewModel: FavoriteViewModel by activityViewModels()
-    private var _binding: FavoriteFragmentBinding? = null
+    private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
-    private lateinit var viewAdapter: FavoriteListAdapter
+    private lateinit var viewAdapter: UserListAdapter
 
     companion object {
-        fun newInstance() = FavoriteFragment()
+        fun newInstance() = MainFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FavoriteFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        viewAdapter = FavoriteListAdapter()
+        viewAdapter = UserListAdapter()
         viewAdapter.notifyDataSetChanged()
 
         binding.favRecyclerView.apply {
@@ -43,7 +35,7 @@ class FavoriteFragment : Fragment() {
 
         binding.favRecyclerView.visibility = View.GONE
         showLoading(true)
-        viewModel.setFavList()
+        activity?.let { viewModel.setFavList(it) }
 
         return binding.root
     }
@@ -71,22 +63,9 @@ class FavoriteFragment : Fragment() {
                     binding.favRecyclerView.visibility = View.GONE
                 }
 
-                viewAdapter.setData(favItem as ArrayList<Favorite>)
+                viewAdapter.setData(favItem)
                 showLoading(false)
             }
         })
-
-        viewAdapter.setOnItemClickCallback(object : FavoriteListAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Favorite) {
-                showItemDetail(data)
-            }
-        })
-    }
-
-    private fun showItemDetail(user: Favorite) {
-        val data = UsersItem(user.login)
-        val renewUserDetailIntent = Intent(activity, DetailUserActivity::class.java)
-        renewUserDetailIntent.putExtra(DetailUserActivity.EXTRA_USER, data)
-        startActivity(renewUserDetailIntent)
     }
 }

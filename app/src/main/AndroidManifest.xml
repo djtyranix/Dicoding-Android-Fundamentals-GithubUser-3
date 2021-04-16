@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <permission
+        android:name="com.nixstudio.githubuser3.READ_DATABASE"
+        android:protectionLevel="normal" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -14,7 +18,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUser3">
-        <activity android:name=".view.favorite.FavoriteActivity"></activity>
+
+        <provider
+            android:name=".provider.FavoriteProvider"
+            android:authorities="com.nixstudio.githubuser3"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.nixstudio.githubuser3.READ_DATABASE" />
+
+        <activity android:name=".view.favorite.FavoriteActivity" />
 
         <receiver
             android:name=".services.AlarmReceiver"

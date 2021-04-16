@@ -16,8 +16,4 @@
     <color name="cyan_200">#FF6EC6FF</color>
     <color name="cyan_700">#FF0069C0</color>
     <color name="red_fav">#FFFF313B</color>
-    <color name="light_blue_50">#FFE1F5FE</color>
-    <color name="light_blue_200">#FF81D4FA</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="light_blue_900">#FF01579B</color>
 </resources>

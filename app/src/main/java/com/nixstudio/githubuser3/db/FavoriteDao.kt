@@ -1,5 +1,6 @@
 package com.nixstudio.githubuser3.db
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.nixstudio.githubuser3.model.Favorite
@@ -20,4 +21,7 @@ interface FavoriteDao {
 
     @Query("SELECT COUNT(login) FROM favorite WHERE login = :login")
     fun checkIfExist(login: String): Int
+
+    @Query("SELECT * FROM favorite")
+    fun getAllToCursor(): Cursor
 }
