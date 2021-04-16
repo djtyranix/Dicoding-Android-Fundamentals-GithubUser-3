@@ -21,11 +21,17 @@ class FavoriteActivity : AppCompatActivity() {
                 .replace(R.id.container, FavoriteFragment.newInstance())
                 .commitNow()
         }
+
+        setActionBarTitle(resources.getString(R.string.favorite_activity))
     }
 
     override fun onResume() {
         super.onResume()
 
         viewModel.setFavList()
+    }
+
+    fun setActionBarTitle(title: String?) {
+        supportActionBar?.title = title
     }
 }
